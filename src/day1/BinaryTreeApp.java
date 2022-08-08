@@ -59,6 +59,12 @@ public class BinaryTreeApp {
 
         System.out.println("reverse Level order traversal using queue");
         //a.levelOrderTraversalInReverseUsingQueue(root);
+
+        System.out.println("Top view of the tree is: ");
+        a.printTopView(root);
+
+        System.out.println("Bottom view of the tree is: ");
+        a.printBottomView(root);
     }
 
 }
