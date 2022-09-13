@@ -49,6 +49,7 @@ public class BinaryTreeApp {
 
         System.out.println("LevelOrder Traversal Recursive: ");
         a.levelOrderTraversalRecursive(root);
+        System.out.println();
 
         System.out.println("Level Order Traversal using Queue: Space and time complexity O(n): ");
         a.levelOrderTraversalUsingQueue(root);
@@ -56,15 +57,68 @@ public class BinaryTreeApp {
 
         System.out.println("Level order Traversal in Reverse order using Recursion: ");
         a.levelOrderTraversalInReverseUsingRecursion(root);
+        System.out.println();
 
-        System.out.println("reverse Level order traversal using queue");
-        //a.levelOrderTraversalInReverseUsingQueue(root);
+        System.out.println("Level order traversal in reverse using queue and stack");
+        a.levelOrderTraversalWithoutUsingRecursion(root);
+        System.out.println();
 
         System.out.println("Top view of the tree is: ");
         a.printTopView(root);
+        System.out.println();
 
         System.out.println("Bottom view of the tree is: ");
         a.printBottomView(root);
+        System.out.println();
+
+        System.out.println("All leaf nodes: ");
+        a.printLeafNodes(root);
+        System.out.println();
+
+        System.out.println("print left tree: ");
+        a.printLeftTree(root);
+        System.out.println();
+
+        System.out.println("left view of the tree is: ");
+        a.printLeftViewOfTree(root,0);
+        System.out.println();
+
+        System.out.println("right view of the tree is: ");
+        a.printRightViewOfTree(root,0);
+        System.out.println();
+
+        System.out.println("inorder traversal using stack");
+        a.inorderTraversalUsingStack(root);
+        System.out.println();
+
+        System.out.println("preorder traversal using stack");
+        a.preorderTraversalUsingStack(root);
+        System.out.println();
+
+        System.out.println("postorder traversal using stack");
+        a.postOrderTraversalUsingStack(root);
+        System.out.println();
+
+        System.out.println("mirror of a tree");
+        //Node res = a.mirrorOfTheTree(root);
+        //a.postOrderTraversalUsingStack(res);
+
+        System.out.println("deleting of binary tree");
+        Node res1 = a.deleteBinaryTree(root);
+
+        System.out.println("checking if the two trees are identical ");
+        boolean b = a.checkIfIdenticalTree(root,root);
+        System.out.println(b);
+
+
+        //We are considering the root node level as 1
+        //if we are getting op level as 0 this means that the node is not present.
+        System.out.println("Get level of the node");
+        int levelStart = 1; //start of the level
+        int val = 5; //value to be searched
+        int l= a.getLevelOfTheNode(root,val,levelStart);
+        System.out.println("level of "+val+ " is "+l);
+
     }
 
 }

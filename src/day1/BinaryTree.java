@@ -87,7 +87,7 @@ public class BinaryTree {
     public int heightOfTree(Node root) {
         if (root == null)
             return -1;
-        return Math.max(heightOfTree(root.left), heightOfTree(root.right)) + 1;
+        return 1 + Math.max(heightOfTree(root.left), heightOfTree(root.right));
     }
 
     public void printNodesAtLevel(Node root, int level) {
@@ -134,20 +134,22 @@ public class BinaryTree {
         }
     }
 
-    public void levelOrderTraversalInReverseUsingQueue(Node root) {
+    public void levelOrderTraversalWithoutUsingRecursion(Node root) {
         if (root == null)
             return;
         Stack<Node> stack = new Stack<>();
-        stack.push(root);
-
-        if (stack.peek().left != null) {
-            stack.push(stack.peek().left);
-            levelOrderTraversalInReverseUsingQueue(root.left);
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while(queue.size()!=0){
+            Node rm = queue.remove();
+            stack.push(rm);
+            if(rm.right!=null)
+                queue.add(rm.right);
+            if(rm.left!=null)
+                queue.add(rm.left);
         }
-
-        if (stack.peek().right != null) {
-            stack.push(stack.peek().right);
-            levelOrderTraversalInReverseUsingQueue(root.right);
+        while(!stack.isEmpty()){
+            System.out.print(stack.pop().data+" ");
         }
     }
 
@@ -198,6 +200,168 @@ public class BinaryTree {
             }
         }
         System.out.println("Bottom view of tree is: "+map.values());
+    }
+
+    public void printLeafNodes(Node root) {
+        if(root==null)
+            return;
+        if(root.left==null && root.right==null) {
+            System.out.print(root.data + " ");
+            return;
+        }
+        printLeafNodes(root.left);
+        printLeafNodes(root.right);
+    }
+
+
+    public void printLeftTree(Node root) {
+        if(root==null)
+            return;
+        System.out.print(root.data+" ");
+        if(root.left!=null)
+        printLeftTree(root.left);
+    }
+
+    public int maxLevel = 0;
+    //In this we just have to print the first element at each level
+    //Complexity is O(n) as we traverse each element once
+    public void printLeftViewOfTree(Node root,int level) {
+        if(root==null)
+            return;
+        if(level>=maxLevel){
+            System.out.print(root.data+" ");
+            maxLevel++;
+        }
+        printLeftViewOfTree(root.left,level+1);
+        printLeftViewOfTree(root.right,level+1);
+    }
+
+    int maxLevel2=0;
+    public void printRightViewOfTree(Node root, int level) {
+        if(root==null)
+            return;
+        if(level>=maxLevel2){
+            System.out.print(root.data+" ");
+            maxLevel2++;
+        }
+        printRightViewOfTree(root.right,level+1);
+        printRightViewOfTree(root.left,level+1);
+    }
+
+    public void inorderTraversalUsingStack(Node root) {
+        if(root==null)
+            return;
+        Stack<Node> st= new Stack<>();
+        while(root!=null){
+            st.push(root);
+            root=root.left;
+        }
+
+        while(!st.isEmpty()){
+            Node t = st.pop();
+            System.out.print(t.data+" ");
+            if(t.right!=null){
+                Node tmp = t.right;
+                while(tmp!=null){
+                    st.push(tmp);
+                    tmp = tmp.left;
+                }
+            }
+        }
+    }
+//we are just adding root node as seeding and then adding right node first then left
+//doing so will make sure left gets removed first
+    public void preorderTraversalUsingStack(Node root) {
+        if(root==null)
+            return;
+        Stack<Node> st = new Stack<>();
+        st.push(root);
+        while(!st.isEmpty()){
+            Node temp = st.pop();
+            System.out.print(temp.data+" ");
+            if(temp.right!=null){
+                st.push(temp.right);
+            }
+            if(temp.left!=null){
+                st.push(temp.left);
+            }
+        }
+    }
+
+    //We are just adding seeding in st1 and adding left node first then the right after popping element to st2
+    //popping from st2 and printing result.
+    public void postOrderTraversalUsingStack(Node root) {
+        if(root==null)
+            return;
+        Stack<Node> st1 = new Stack<>();
+        Stack<Node> st2 = new Stack<>();
+        st1.push(root);
+        while(!st1.isEmpty()){
+            Node temp = st1.pop();
+            st2.push(temp);
+            if(temp.left!=null)
+                st1.push(temp.left);
+            if(temp.right!=null)
+                st1.push(temp.right);
+        }
+        while(!st2.isEmpty()){
+            System.out.print(st2.pop().data+" ");
+        }
+    }
+
+    //complexity O(n)
+    public Node mirrorOfTheTree(Node root) {
+        if(root==null)
+            return null;
+        //swapping left and right node
+        Node temp;
+        temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+
+        mirrorOfTheTree(root.left);
+        mirrorOfTheTree(root.right);
+        return root;
+    }
+
+//just similar to postorder traversal Left right node
+    public Node deleteBinaryTree(Node root) {
+        if(root==null)
+            return null;
+        Node left = deleteBinaryTree(root.left);
+        Node right = deleteBinaryTree(root.right);
+        System.out.println("Deleting node "+root.data);
+        //cleaning memory for the node
+        root = null;
+        return root;
+    }
+
+    //also can check if preorder and postorder traversals are identical
+    public boolean checkIfIdenticalTree(Node t1, Node t2) {
+        if(t1==null && t2==null)
+            return true;
+        if(t1==null || t2==null)
+            return false;
+        return t1.data==t2.data
+                && checkIfIdenticalTree(t1.left,t2.left)
+                && checkIfIdenticalTree(t1.right,t2.right);
+    }
+
+    //We are considering the root node level as 1
+    public int getLevelOfTheNode(Node root, int val, int level) {
+        if(root==null)
+            return 0;
+        int l;
+        if(root.data==val)
+            return level;
+        l=getLevelOfTheNode(root.left,val,level+1);
+
+        //this means that you have got the value in the left subtree. Hence, just return level. No need to call function on right subtree.
+        if(l!=0)
+            return l;
+
+        l=getLevelOfTheNode(root.right,val,level+1);
+        return l;
     }
 }
 
