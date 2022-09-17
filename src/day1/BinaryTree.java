@@ -1,9 +1,6 @@
 package day1;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
-import java.util.TreeMap;
+import java.util.*;
 
 class Node{
     int data;
@@ -189,7 +186,7 @@ public class BinaryTree {
             Node temp = queue.remove();
             int ht = temp.height;
 
-            map.put(ht,temp.data);
+            map.put(ht,temp.data);//here we are putting and replacing every new value in the map as the most recent will be most bottom
             if(temp.left!=null){
                 temp.left.height=ht-1;
                 queue.add(temp.left);
@@ -362,6 +359,229 @@ public class BinaryTree {
 
         l=getLevelOfTheNode(root.right,val,level+1);
         return l;
+    }
+
+    public void printBoundaryNodesInAnticlockwise(Node root) {
+        if(root==null)
+            return;
+        System.out.print(root.data+" ");
+        printBoundaryLeft(root.left);
+        printLeafNodes1(root.left);
+        printLeafNodes1(root.right);
+        printBoundaryRight(root.right);
+    }
+    public void printBoundaryLeft(Node root){
+        if(root==null)
+            return;
+        if(root.left!=null){
+            //we are printing node first then calling recursively as we want left nodes to be printed in order.
+            System.out.print(root.data+" ");
+            printBoundaryLeft(root.left);
+        }
+        else if(root.right!=null){
+            System.out.print(root.data+" ");
+            printBoundaryLeft(root.right);
+        }
+    }
+
+    public void printLeafNodes1(Node root){
+        if(root==null)
+            return;
+        if(root.left==null && root.right==null){
+            System.out.print(root.data +" ");
+        }
+
+        printLeafNodes(root.left);
+        printLeafNodes(root.right);
+    }
+
+    public void printBoundaryRight(Node root){
+        if(root==null)
+            return;
+        if(root.right!=null){
+            //here first we are calling the function then printing as we want the right node to print in opposite.
+            printBoundaryRight(root.right);
+            System.out.print(root.data+" ");
+        }
+        else if(root.left!=null){
+            printBoundaryRight(root.left);
+            System.out.print(root.data+" ");
+        }
+    }
+
+    public void printVerticalOrderOfBinaryTree(Node root) {
+        Queue<Node> queue = new LinkedList<Node>();
+        TreeMap<Integer,ArrayList<Node>> hm = new TreeMap<>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            Node temp = queue.remove();
+            int height = temp.height;
+            if(hm.containsKey(height)) {
+                ArrayList<Node> al = hm.get(height);
+                al.add(temp);
+                hm.put(height, al);
+            }
+            else{
+                ArrayList<Node> al = new ArrayList<>();
+                al.add(temp);
+                hm.put(height,al);
+            }
+
+            if(temp.left!=null)
+            {
+                temp.left.height = height - 1;
+                queue.add(temp.left);
+            }
+            if(temp.right!=null)
+            {
+                temp.right.height = height + 1;
+                queue.add(temp.right);
+            }
+        }
+        for(Map.Entry entry:hm.entrySet()){
+            int sum = 0;
+            System.out.print(entry.getKey()+":");
+            ArrayList<Node> al = (ArrayList<Node>) entry.getValue();
+            System.out.print(al.stream().map(n->n.data).mapToInt(Integer::intValue).sum());
+            System.out.println();
+            al.stream().map(n->n.data).forEach((n)->System.out.print(n+" "));
+            System.out.println();       }
+    }
+
+    public void sumOfEachLevelOfBinaryTree(Node root) {
+        if (root == null)
+            return;
+        Queue<Node> queue = new LinkedList<>();
+        int sum = 0;
+        queue.add(root);
+        while (true) {
+            int size = queue.size();  //this calculates the number of nodes at each level
+            sum=0; //resetting sum to 0 before starting with the next level
+            if(size==0)  //checking if the queue is empty then each node has been processed.
+                break;
+            while (size>0) {  //checking if each node at current level is processed
+                Node temp = queue.remove();
+                sum = sum + temp.data;
+                if (temp.left != null)
+                    queue.add(temp.left);
+                if (temp.right != null)
+                    queue.add(temp.right);
+                size--;
+            }
+            System.out.print(sum+" ");
+        }
+        return;
+    }
+
+    public boolean searchInBinaryTree(Node root, int key) {
+        if(root==null)
+            return false;
+        if(root.data==key)
+            return true;
+        return searchInBinaryTree(root.left,key) || searchInBinaryTree(root.right,key);
+    }
+
+    public boolean searchInBinaryTreeQueuw(Node root, int key) {
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        if(root==null)
+            return false;
+        while (queue.size()>0)
+        {
+            Node temp = queue.remove();
+            if(temp.data==key)
+                return true;
+            if(temp.left!=null)
+                queue.add(temp.left);
+            if(temp.right!=null)
+                queue.add(temp.right);
+        }
+        return false;
+    }
+
+    public void printNodesBetweenLevel(Node root,int startLevel, int endLevel) {
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        int level = 1;
+        while(true){
+            int size = queue.size();
+            if(size==0 || level>endLevel)
+                break;
+            while(size>0){
+                Node temp = queue.remove();
+                if(level>=startLevel && level<=endLevel) {
+                    System.out.print(temp.data + " ");
+                }
+                size--;
+                if (temp.left != null)
+                        queue.add(temp.left);
+                if (temp.right != null)
+                        queue.add(temp.right);
+            }
+            level++;
+            System.out.println();
+        }
+    }
+
+    public int maxWidthOfTree(Node root) {
+        Queue<Node> queue = new LinkedList<>();
+        ArrayList<Integer> al = new ArrayList<>();
+        queue.add(root);
+        int level=1;
+        while(true){
+        int size = queue.size();
+        al.add(size);
+        if(size==0)
+            break;
+        while(size>0){
+            Node temp = queue.remove();
+            size--;
+            if(temp.left!=null)
+                queue.add(temp.left);
+            if(temp.right!=null)
+                queue.add(temp.right);
+        }
+        level++;
+        }
+        return  al.stream().mapToInt(Integer::intValue).max().getAsInt();
+    }
+
+    public boolean isMirror(Node node1, Node node2) {
+        if(node1==null && node2==null){
+            return true;
+        }
+        if(node1==null || node2==null)
+            return false;
+
+        return node1.data==node2.data
+                && isMirror(node1.left,node2.right)
+                && isMirror(node1.right ,node2.left);
+    }
+
+    public boolean checkMirrorStructure(Node node1, Node node2) {
+        if(node1==null && node2==null)
+            return true;
+        if(node1==null || node2==null)
+            return false;
+        //since the structure only needs to be same we are not checking data equality
+        return checkMirrorStructure(node1.left,node2.right)
+                && checkMirrorStructure(node1.right,node2.left);
+    }
+
+
+    private  boolean isFoldable(Node root) {
+        if(root==null)
+            return true;
+        return checkMirrorStructure(root.left,root.right);
+    }
+
+    //this function considers root node level as 1
+    public int getWidthOfALevel(Node root, int level) {
+        if(root==null)
+            return 0;
+        if(level==1)  //at root node level no. of nodes is 1 ie. root noe itself
+            return 1;
+        return getWidthOfALevel(root.left,level-1) + getWidthOfALevel(root.right,level-1);
     }
 }
 

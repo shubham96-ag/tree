@@ -119,6 +119,45 @@ public class BinaryTreeApp {
         int l= a.getLevelOfTheNode(root,val,levelStart);
         System.out.println("level of "+val+ " is "+l);
 
-    }
+        System.out.println("Print boundary nodes in anticlockwise");
+        a.printBoundaryNodesInAnticlockwise(root);
+        System.out.println();
 
+        System.out.println("Vertical order of the binary tree");
+        a.printVerticalOrderOfBinaryTree(root);
+        System.out.println();
+
+        System.out.println("Sum of each level of the binary tree");
+        a.sumOfEachLevelOfBinaryTree(root);
+        System.out.println();
+
+        System.out.println("Searching in Binary tree");
+        boolean present = a.searchInBinaryTree(root,110);
+        System.out.println(present);
+        present = a.searchInBinaryTreeQueuw(root,2);
+        System.out.println(present);
+
+        System.out.println("Spiral order of the tree");
+        //a.spiralOrderOfTree(root);
+
+        System.out.println("print nodes between levels");
+        a.printNodesBetweenLevel(root,2,3);
+
+        System.out.println("Max width of the tree");
+        int maxWidth = a.maxWidthOfTree(root);
+        System.out.println(maxWidth);
+
+        System.out.println("Check if 2 trees are mirror to each other");
+        System.out.println(a.isMirror(root,root));
+
+        System.out.println("Check if mirror structure");
+        System.out.println(a.checkMirrorStructure(root,root));
+
+        System.out.println("Checking if tree is foldable ie. left and right subtree of root node overlap each other");
+        System.out.println(a.isFoldable(root));
+
+        System.out.println("get width of a tree level");
+        System.out.println(a.getWidthOfALevel(root,2));
+
+    }
 }
