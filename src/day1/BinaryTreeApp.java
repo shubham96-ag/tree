@@ -154,7 +154,7 @@ public class BinaryTreeApp {
         System.out.println(a.checkMirrorStructure(root,root));
 
         System.out.println("Checking if tree is foldable ie. left and right subtree of root node overlap each other");
-        System.out.println(a.isFoldable(root));
+       // System.out.println(a.isFoldable(root));
 
         System.out.println("get width of a tree level");
         System.out.println(a.getWidthOfALevel(root,2));
