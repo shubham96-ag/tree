@@ -5,12 +5,14 @@ public class SearchingAlgo {
         int [] a ={4,4,4,4,5,6};
         int [] a1 ={11,12,15,18,2,5,6,8};
         int [] a2={15,18,2,3,6,12};
+        int [] nearlySorted={5,10,30,20,40};
         System.out.println("First occurence of 4 is at index: "+findFirstOccurence(a,4));
         System.out.println("Last occurence of 4 is at index: "+findLastOccurence(a,4));
         System.out.println("Total number of 4 in array are:"+(findLastOccurence(a,4)-findFirstOccurence(a,4)+1));
         System.out.println("Number of times sorted array is rotated: "+noOfTimesSortedArrayIsRotated(a1));
         System.out.println("Findnd: "+findMinIdx(a1));
         System.out.println("Index of 6 in rotated sorted array  is:  "+findElementInRotatedSortedArray(a2,6));
+        System.out.println("index of 20 in nearlt sorted array is : "+findElementInNearlySortedArray(nearlySorted,20));
     }
 
     public static int binarySearch(int[] a,int start,int end, int key){
@@ -99,4 +101,25 @@ public class SearchingAlgo {
             return res1;
         return res2;
     }
+
+    //nearly sorted array means that ith element can be present in (i-1)th (i)th (i+1)th position
+    public static int findElementInNearlySortedArray(int [] a, int key){
+        int start = 0,end = a.length-1,mid;
+        while(start<end){
+            mid = (start+end)/2;
+            if(a[mid]==key)
+                return mid;
+            if(a[mid-1]==key && (mid-1)>start)
+                return mid-1;
+            if(a[mid+1]==key && (mid+1)<end)
+                return mid+1;
+            if(a[mid]>key)
+                end=mid-2;
+            if(a[mid]<key)
+                start=mid+2;
+        }
+        return -1;
+    }
+
+
 }
