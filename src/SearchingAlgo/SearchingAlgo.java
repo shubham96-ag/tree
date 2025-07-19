@@ -6,6 +6,7 @@ public class SearchingAlgo {
         int [] a1 ={11,12,15,18,2,5,6,8};
         int [] a2={15,18,2,3,6,12};
         int [] nearlySorted={5,10,30,20,40};
+        int [] floor={1,2,3,7,8,10,10,12,29};
         System.out.println("First occurence of 4 is at index: "+findFirstOccurence(a,4));
         System.out.println("Last occurence of 4 is at index: "+findLastOccurence(a,4));
         System.out.println("Total number of 4 in array are:"+(findLastOccurence(a,4)-findFirstOccurence(a,4)+1));
@@ -13,6 +14,8 @@ public class SearchingAlgo {
         System.out.println("Findnd: "+findMinIdx(a1));
         System.out.println("Index of 6 in rotated sorted array  is:  "+findElementInRotatedSortedArray(a2,6));
         System.out.println("index of 20 in nearlt sorted array is : "+findElementInNearlySortedArray(nearlySorted,20));
+        System.out.println("floor of 5 is : "+findFloorOfElement(floor,5));
+        System.out.println("Ceil of 5 is : "+findCeilOfElement(floor,5));
     }
 
     public static int binarySearch(int[] a,int start,int end, int key){
@@ -119,6 +122,47 @@ public class SearchingAlgo {
                 start=mid+2;
         }
         return -1;
+    }
+    //floor(element) id the element itself if present in array. else it is the greatest of elements  smaller than key
+    //floor(element) is the end pointer after the execution of th loop if m
+    public static int findFloorOfElement(int[] a, int key){
+        int start=0,end=a.length-1,mid,res=-1;
+        while(start<end)
+        {
+             mid = (start+end)/2;
+             if(a[mid]==key)
+                 return a[mid];
+             else if(a[mid]<key) {
+                 res=mid;
+                 start = mid + 1;
+             }
+             else{
+                 end =mid-1;
+             }
+
+        }
+        return a[res];
+    }
+
+    //Ceil(element) id the element itself if present in array. else it is the smallest of elements  graeter than key
+    //Ceil(element) is the start pointer after the execution of th loop if m
+    public static int findCeilOfElement(int[] a, int key){
+        int start=0,end=a.length-1,mid,res=-1;
+        while(start<end)
+        {
+            mid = (start+end)/2;
+            if(a[mid]==key)
+                return a[mid];
+            else if(a[mid]<key) {
+                start = mid + 1;
+            }
+            else{
+                res=mid;
+                end=mid-1;
+            }
+
+        }
+        return a[res];
     }
 
 
